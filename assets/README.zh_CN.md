@@ -19,9 +19,10 @@
 
 `fonts/physics_font_16.c` 与 `fonts/physics_font_22.c` 是使用 `lv_font_conv 1.5.3`
 从 Noto Sans SC（SIL Open Font License 1.1，取自本机 Windows 字体目录）生成的
-4 bpp LVGL 位图子集。字符集从 `main/app_physics.c` 与 `main/quiz_bank.c` 中显示
-的字符串提取；修改界面文字后必须重新生成这两个文件，否则缺失字符会直接显示为
-空白，构建本身不会报错。
+4 bpp LVGL 位图子集。可变字体先经 `fonttools varLib.instancer` 取 wght=500（Medium）
+实例再转换；可变字体的默认字重（Thin）在 240 × 320 屏上过细，不易辨认。字符集从
+`main/app_physics.c` 与 `main/quiz_bank.c` 中显示的字符串提取；修改界面文字后必须
+重新生成这两个文件，否则缺失字符会直接显示为空白，构建本身不会报错。
 
 ## 图片（images）
 

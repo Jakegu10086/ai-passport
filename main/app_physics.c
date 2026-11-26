@@ -28,8 +28,8 @@ LV_FONT_DECLARE(physics_font_22);
 #define COLOR_INK    0x061420
 
 #define OPTION_TOP 160
-#define OPTION_STEP 34
-#define OPTION_H 30
+#define OPTION_STEP 38
+#define OPTION_H 35
 
 typedef enum {
     SCREEN_HOME = 0,
@@ -98,7 +98,7 @@ static lv_obj_t *add_battery(lv_obj_t *scr) {
     if (soc < 0) snprintf(buf, sizeof(buf), "--");
     else snprintf(buf, sizeof(buf), "%d%%", soc);
     lv_obj_t *label = make_label(scr, &physics_font_16, COLOR_MUTED, buf);
-    lv_obj_align(label, LV_ALIGN_TOP_RIGHT, -16, 14);
+    lv_obj_align(label, LV_ALIGN_TOP_RIGHT, -16, 8);
     return label;
 }
 
@@ -179,7 +179,7 @@ static void quiz_refresh_question(void) {
     lv_label_set_text(s_topic_label, q->topic);
     lv_label_set_text(s_prompt_label, q->prompt);
 
-    int fill_w = 208 * (s_session.index + 1) / (s_session.count > 0 ? s_session.count : 1);
+    int fill_w = 224 * (s_session.index + 1) / (s_session.count > 0 ? s_session.count : 1);
     lv_obj_set_width(s_progress_fill, fill_w);
 
     for (int i = 0; i < QUIZ_OPTION_COUNT; i++) {
@@ -231,53 +231,56 @@ static void show_quiz(void) {
     lv_obj_t *scr = screen_create();
 
     lv_obj_t *kicker = make_label(scr, &physics_font_16, COLOR_ACCENT, "物理题");
-    lv_obj_set_pos(kicker, 16, 10);
+    lv_obj_set_pos(kicker, 16, 6);
     add_battery(scr);
 
     s_index_label = make_label(scr, &physics_font_16, COLOR_MUTED, "");
-    lv_obj_set_pos(s_index_label, 16, 34);
+    lv_obj_set_pos(s_index_label, 16, 30);
 
-    lv_obj_t *chip = make_rect(scr, 152, 31, 72, 22, 11, 0x1B2A40, 0x1B2A40, 0);
+    lv_obj_t *chip = make_rect(scr, 152, 28, 72, 22, 11, 0x1B2A40, 0x1B2A40, 0);
     s_topic_label = make_label(chip, &physics_font_16, COLOR_ACCENT, "");
     lv_obj_set_width(s_topic_label, 72);
     lv_obj_set_style_text_align(s_topic_label, LV_TEXT_ALIGN_CENTER, 0);
     lv_obj_align(s_topic_label, LV_ALIGN_CENTER, 0, 0);
 
-    make_rect(scr, 16, 60, 208, 6, 3, COLOR_LINE, COLOR_LINE, 0);
-    s_progress_fill = make_rect(scr, 16, 60, 21, 6, 3, COLOR_ACCENT, COLOR_ACCENT, 0);
+    make_rect(scr, 8, 54, 224, 5, 2, COLOR_LINE, COLOR_LINE, 0);
+    s_progress_fill = make_rect(scr, 8, 54, 22, 5, 2, COLOR_ACCENT, COLOR_ACCENT, 0);
 
-    lv_obj_t *prompt_card = make_rect(scr, 12, 74, 216, 78, 14, COLOR_CARD, COLOR_LINE, 1);
+    lv_obj_t *prompt_card = make_rect(scr, 8, 64, 224, 92, 14, COLOR_CARD, COLOR_LINE, 1);
     s_prompt_label = make_label(prompt_card, &physics_font_16, COLOR_TEXT, "");
-    lv_obj_set_width(s_prompt_label, 192);
+    lv_obj_set_width(s_prompt_label, 208);
     lv_label_set_long_mode(s_prompt_label, LV_LABEL_LONG_WRAP);
-    lv_obj_set_style_text_line_space(s_prompt_label, 3, 0);
-    lv_obj_set_pos(s_prompt_label, 12, 10);
+    lv_obj_set_style_text_line_space(s_prompt_label, 0, 0);
+    lv_obj_set_pos(s_prompt_label, 8, 6);
 
     static const char kLetters[] = "ABCD";
     for (int i = 0; i < QUIZ_OPTION_COUNT; i++) {
-        lv_obj_t *card = make_rect(scr, 12, OPTION_TOP + i * OPTION_STEP, 216, OPTION_H,
+        lv_obj_t *card = make_rect(scr, 8, OPTION_TOP + i * OPTION_STEP, 224, OPTION_H,
                                    10, COLOR_CARD, COLOR_LINE, 2);
         s_opt_card[i] = card;
         char letter[3] = { kLetters[i], '.', '\0' };
         lv_obj_t *letter_label = make_label(card, &physics_font_16, COLOR_ACCENT, letter);
-        lv_obj_align(letter_label, LV_ALIGN_LEFT_MID, 10, 0);
+        lv_obj_align(letter_label, LV_ALIGN_LEFT_MID, 8, 0);
         s_opt_text[i] = make_label(card, &physics_font_16, COLOR_TEXT, "");
-        lv_obj_set_width(s_opt_text[i], 168);
-        lv_obj_align(s_opt_text[i], LV_ALIGN_LEFT_MID, 36, 0);
+        lv_obj_set_width(s_opt_text[i], 190);
+        lv_label_set_long_mode(s_opt_text[i], LV_LABEL_LONG_DOT);
+        lv_obj_align(s_opt_text[i], LV_ALIGN_LEFT_MID, 28, 0);
     }
 
-    s_feedback_box = make_rect(scr, 12, OPTION_TOP - 2, 216, 140, 14, COLOR_CARD, COLOR_LINE, 1);
+    s_feedback_box = make_rect(scr, 8, OPTION_TOP - 2, 224, 152, 14, COLOR_CARD, COLOR_LINE, 1);
     s_feedback_title = make_label(s_feedback_box, &physics_font_22, COLOR_OK, "");
-    lv_obj_set_pos(s_feedback_title, 14, 8);
+    lv_obj_set_pos(s_feedback_title, 14, 6);
     s_feedback_hint = make_label(s_feedback_box, &physics_font_16, COLOR_ACCENT, "");
-    lv_obj_align(s_feedback_hint, LV_ALIGN_TOP_RIGHT, -14, 14);
+    lv_obj_align(s_feedback_hint, LV_ALIGN_TOP_RIGHT, -14, 10);
     s_feedback_answer = make_label(s_feedback_box, &physics_font_16, COLOR_TEXT, "");
-    lv_obj_set_pos(s_feedback_answer, 14, 42);
+    lv_obj_set_width(s_feedback_answer, 196);
+    lv_label_set_long_mode(s_feedback_answer, LV_LABEL_LONG_WRAP);
+    lv_obj_set_pos(s_feedback_answer, 14, 38);
     s_feedback_detail = make_label(s_feedback_box, &physics_font_16, COLOR_MUTED, "");
-    lv_obj_set_width(s_feedback_detail, 188);
+    lv_obj_set_width(s_feedback_detail, 196);
     lv_label_set_long_mode(s_feedback_detail, LV_LABEL_LONG_WRAP);
-    lv_obj_set_style_text_line_space(s_feedback_detail, 3, 0);
-    lv_obj_set_pos(s_feedback_detail, 14, 68);
+    lv_obj_set_style_text_line_space(s_feedback_detail, 1, 0);
+    lv_obj_set_pos(s_feedback_detail, 14, 84);
     lv_obj_add_flag(s_feedback_box, LV_OBJ_FLAG_HIDDEN);
 
     s_screen = SCREEN_QUIZ;

@@ -6,7 +6,7 @@
 
 #define QUIZ_OPTION_COUNT 4
 #define QUIZ_ROUND_SIZE 10
-#define QUIZ_BANK_MAX 96
+#define QUIZ_BANK_MAX 160
 
 typedef struct {
     const char *topic;                       // 力学 / 电学 / 光学 ...

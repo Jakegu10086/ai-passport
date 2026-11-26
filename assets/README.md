@@ -21,10 +21,12 @@ Store reusable font files and generated font sources in `fonts/`.
 
 `fonts/physics_font_16.c` and `fonts/physics_font_22.c` are 4 bpp LVGL bitmap
 subsets generated with `lv_font_conv 1.5.3` from Noto Sans SC (SIL Open Font
-License 1.1), using the local Windows copy of the family. The glyph set is
-extracted from the strings in `main/app_physics.c` and `main/quiz_bank.c`, so any
-displayed-text change requires regenerating both files; missing glyphs otherwise
-render blank without a build error.
+License 1.1), using the local Windows copy of the family. The variable font is
+first instanced at weight 500 (Medium) with `fonttools varLib.instancer`; the
+variable default (Thin) is too light to read on the 240 × 320 panel. The glyph
+set is extracted from the strings in `main/app_physics.c` and `main/quiz_bank.c`,
+so any displayed-text change requires regenerating both files; missing glyphs
+otherwise render blank without a build error.
 
 ## Images
 
